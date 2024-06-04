@@ -21,4 +21,6 @@ public interface IAlumnoDAO {
     public AlumnoEntidad obtenerPorId(int id) throws PersistenciaException;
     
     public AlumnoEntidad editar(AlumnoEntidad alumno) throws PersistenciaException;
+    
+    public AlumnoEntidad eliminar(AlumnoEntidad alumno) throws PersistenciaException;
 }

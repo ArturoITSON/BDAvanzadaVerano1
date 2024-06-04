@@ -10,6 +10,7 @@ package negocio;
  */
 public class EditarAlumnoDTO {
     
+    private int id;
     private String nombres;
     private String apellidoPaterno;
     private String apellidoMaterno;
@@ -26,6 +27,28 @@ public class EditarAlumnoDTO {
         this.eliminado = eliminado;
         this.activo = activo;
     }
+
+    public EditarAlumnoDTO(int id, String nombres, String apellidoPaterno, String apellidoMaterno, boolean eliminado, boolean activo) {
+        this.id = id;
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+        this.eliminado = eliminado;
+        this.activo = activo;
+    }
+
+    
+    
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
 
     public String getNombres() {
         return nombres;

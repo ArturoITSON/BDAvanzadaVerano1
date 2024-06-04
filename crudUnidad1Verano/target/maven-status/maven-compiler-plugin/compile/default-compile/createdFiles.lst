@@ -7,6 +7,7 @@ dtos\AlumnoTablaDTO.class
 presentacion\frmCRUD$2.class
 presentacion\frmCRUD$15.class
 negocio\NegocioException.class
+negocio\EliminarAlumnoDTO.class
 presentacion\frmCRUD$9.class
 persistencia\IAlumnoDAO.class
 negocio\IAlumnoNegocio.class
@@ -22,6 +23,7 @@ presentacion\frmCRUD$12.class
 presentacion\frmCRUD$8.class
 presentacion\frmCRUD$1.class
 negocio\AlumnoNegocio.class
+presentacion\frmCRUD$17.class
 presentacion\frmCRUD$6.class
 negocio\EditarAlumnoDTO.class
 presentacion\frmCRUD$10.class
@@ -35,3 +37,4 @@ persistencia\IConexionBD.class
 presentacion\frmCRUD$11.class
 com\mycompany\crudunidad1verano\AlumnosTemporal.class
 persistencia\ConexionBD.class
+presentacion\frmCRUD$16.class

@@ -169,9 +169,47 @@ public class AlumnoDAO implements IAlumnoDAO{
 
     @Override
     public AlumnoEntidad editar(AlumnoEntidad alumno) throws PersistenciaException {
-//        AlumnoEntidad alum = new AlumnoEntidad();
-//         try{
+
+        AlumnoEntidad alum = new AlumnoEntidad();
+
+        alum.setActivo(alumno.isActivo());
+        alum.setApellidoMaterno(alumno.getApellidoMaterno());
+        alum.setApellidoPaterno(alumno.getApellidoPaterno());
+        alum.setIdAlumno(alumno.getIdAlumno());
+        alum.setNombres(alumno.getNombres());
+        
+        try{
 //        
+
+        Connection conexion = this.conexionBD.crearConexion();
+
+        
+        String sentenciaSql = "UPDATE alumnos set nombres=?, apellidoPaterno=?, apellidoMaterno=?, activo=? WHERE idAlumno =? ";
+
+        PreparedStatement comandoSQL = conexion.prepareStatement(sentenciaSql);
+            
+        PreparedStatement preparedStatement = conexion.prepareStatement(sentenciaSql, Statement.RETURN_GENERATED_KEYS);
+    
+        // Establecer los valores para los parametros ed lse sentencia SQL
+        preparedStatement.setString(1, alum.getNombres());
+        preparedStatement.setString(2, alum.getApellidoPaterno());
+        preparedStatement.setString(3, alum.getApellidoMaterno());
+        preparedStatement.setBoolean(4, alum.isActivo());
+        preparedStatement.setInt(5, alum.getIdAlumno());
+            
+        // Ejecutar la sentencia SQL de insercion
+        preparedStatement.executeUpdate();
+        
+        // Obtener los claves generadas automaticamente (por ejemplo, el ID del nuevo registro)
+        ResultSet resultado = preparedStatement.getGeneratedKeys();
+            while (resultado.next()){
+            // Imprimir el ID generado para el nuevo registro
+            System.out.println(resultado.getInt(1));
+        }
+               
+            
+        return alum;    
+ 
 //        // Establecer la conexion a la base de datos
 //        Connection conexion = this.conexionBD.crearConexion();
 //        
@@ -196,12 +234,12 @@ public class AlumnoDAO implements IAlumnoDAO{
 //             System.out.println("21");
 //            return alumnoConsultado;
 //            
-//        }
+        }
 //
-//         catch(SQLException ex){
+         catch(SQLException ex){
 //             //Capturar y manejar cualquier excepcion SQL que ocurra
-//             System.out.println("Ocurrio un error " + ex.getMessage());
-//         }
+             System.out.println("Ocurrio un error " + ex.getMessage());
+         }
 //
 //         
 //        return alum;       
@@ -209,8 +247,51 @@ public class AlumnoDAO implements IAlumnoDAO{
         return null;
     }
 
+    @Override
+    public AlumnoEntidad eliminar(AlumnoEntidad alumno) throws PersistenciaException {
+        AlumnoEntidad alum = new AlumnoEntidad();
 
+        alum.setIdAlumno(alumno.getIdAlumno());
+
+        
+        try{
+//        
+
+        Connection conexion = this.conexionBD.crearConexion();
+
+        
+        String sentenciaSql = "DELETE from alumnos WHERE idAlumno =? ";
+
+        PreparedStatement comandoSQL = conexion.prepareStatement(sentenciaSql);
+            
+        PreparedStatement preparedStatement = conexion.prepareStatement(sentenciaSql, Statement.RETURN_GENERATED_KEYS);
     
+        // Establecer los valores para los parametros ed lse sentencia SQL
+        preparedStatement.setInt(1, alum.getIdAlumno());
+            
+        // Ejecutar la sentencia SQL de insercion
+        preparedStatement.executeUpdate();
+        
+        // Obtener los claves generadas automaticamente (por ejemplo, el ID del nuevo registro)
+        ResultSet resultado = preparedStatement.getGeneratedKeys();
+            while (resultado.next()){
+            // Imprimir el ID generado para el nuevo registro
+            System.out.println(resultado.getInt(1));
+        }
+               
+            
+        return alum;        
+        
+        
+    }
+        
+        catch(SQLException ex){
+             //Capturar y manejar cualquier excepcion SQL que ocurra
+             System.out.println("Ocurrio un error " + ex.getMessage());
+         }
+
+        return null;
+    }   
     
 
     

@@ -132,6 +132,7 @@ public class AlumnoNegocio implements IAlumnoNegocio {
     public EditarAlumnoDTO editar(EditarAlumnoDTO alumno) throws NegocioException {
         
         AlumnoEntidad alu = new AlumnoEntidad();
+        int id = alumno.getId();
         String nombre = alumno.getNombres();
         String apellidoP = alumno.getApellidoPaterno();
         String apellidoM = alumno.getApellidoMaterno(); 
@@ -145,6 +146,7 @@ public class AlumnoNegocio implements IAlumnoNegocio {
                     alu.setApellidoPaterno(apellidoP);
                     alu.setNombres(nombre);
                     alu.setActivo(alumno.isActivo());
+                    alu.setIdAlumno(id);
                     
                     try {
                         alumnoDAO.editar(alu);
@@ -160,6 +162,26 @@ public class AlumnoNegocio implements IAlumnoNegocio {
         
         
         
+    }
+    
+    
+    
+    
+    @Override
+    public EliminarAlumnoDTO eliminar(EliminarAlumnoDTO alumno) throws NegocioException{
+        
+        AlumnoEntidad alu = new AlumnoEntidad();
+        alu.setIdAlumno(alumno.getIdAlumno());
+        
+        try {
+            alumnoDAO.eliminar(alu);
+            
+            return alumno;
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(AlumnoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return alumno;
     }
         
         

@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import negocio.AlumnoLecturaDTO;
 import negocio.EditarAlumnoDTO;
+import negocio.EliminarAlumnoDTO;
 import negocio.GuardarAlumnoDTO;
 import negocio.IAlumnoNegocio;
 import negocio.NegocioException;
@@ -47,6 +48,7 @@ public class frmCRUD extends javax.swing.JFrame {
     private IConexionBD ConexionBD = new ConexionBD();
     private IAlumnoDAO alumnoDAO = new AlumnoDAO(ConexionBD);
     private GuardarAlumnoDTO alumno = new GuardarAlumnoDTO();
+    private static int id = 0;
     
     public frmCRUD(IAlumnoNegocio alumnoNegocio) {
         initComponents();
@@ -60,6 +62,7 @@ public class frmCRUD extends javax.swing.JFrame {
         btnGuardar.setEnabled(false);
         btnEliminar.setVisible(false);
         btnHecho.setVisible(false);
+        btnCancelar2.setVisible(false);
     }
 
     private void cargarMetodosIniciales(){
@@ -106,9 +109,9 @@ public class frmCRUD extends javax.swing.JFrame {
         int indiceColumnaEliminar = 6;
         modeloColumnas = this.tblAlumnos.getColumnModel();
         modeloColumnas.getColumn(indiceColumnaEliminar)
-                .setCellRenderer(new JButtonRenderer("Eliminar"));
+                .setCellRenderer(new JButtonRenderer("------"));
         modeloColumnas.getColumn(indiceColumnaEliminar)
-                .setCellEditor(new JButtonCellEditor("Eliminar",
+                .setCellEditor(new JButtonCellEditor("------",
                         onEliminarClickListener));
     }
 
@@ -202,6 +205,7 @@ public class frmCRUD extends javax.swing.JFrame {
         btnActualizar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnHecho = new javax.swing.JButton();
+        btnCancelar2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -330,11 +334,23 @@ public class frmCRUD extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnHecho.setText("Hecho");
         btnHecho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHechoActionPerformed(evt);
+            }
+        });
+
+        btnCancelar2.setText("Cancelar");
+        btnCancelar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelar2ActionPerformed(evt);
             }
         });
 
@@ -349,25 +365,29 @@ public class frmCRUD extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jblMal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(campoTextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(39, 39, 39)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jblMal1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(campoTextoApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jblMal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(campoTextoNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(39, 39, 39)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jblMal1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(campoTextoApellidoP, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(btnActualizar))
                                 .addGap(32, 32, 32)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(jblMal2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(campoTextoApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(campoTextoApellidoM, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(btnHecho))
                                         .addGap(18, 18, 18)
                                         .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -381,12 +401,12 @@ public class frmCRUD extends javax.swing.JFrame {
                                                 .addComponent(jLabel4)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addComponent(btnCancelarRegistro))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addComponent(btnActualizar)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnHecho)
-                                                .addGap(32, 32, 32)
-                                                .addComponent(btnEliminar)))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(188, 188, 188)
+                                                .addComponent(btnEliminar)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(btnCancelar2)
+                                                .addGap(0, 0, Short.MAX_VALUE)))
                                         .addGap(23, 23, 23))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
@@ -398,7 +418,7 @@ public class frmCRUD extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSiguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 861, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,18 +451,20 @@ public class frmCRUD extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addComponent(btnCancelarRegistro)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnActualizar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnHecho))
-                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEliminar)
+                        .addComponent(btnHecho)
+                        .addComponent(btnCancelar2))
+                    .addComponent(btnActualizar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAtras)
                     .addComponent(btnSiguiente)
                     .addComponent(lblPagina))
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
@@ -460,6 +482,7 @@ public class frmCRUD extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnCancelarRegistro.setVisible(true);
         btnGuardar.setVisible(true);
+        btnActualizar.setVisible(false);
     }//GEN-LAST:event_btnNuevoRegistroActionPerformed
 
     private void btnAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasActionPerformed
@@ -476,6 +499,7 @@ public class frmCRUD extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnGuardar.setVisible(false);
         btnCancelarRegistro.setVisible(false);
+        btnActualizar.setVisible(true);
     }//GEN-LAST:event_btnCancelarRegistroActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -509,6 +533,7 @@ public class frmCRUD extends javax.swing.JFrame {
         finally{
             
         this.cargarAlumnosEnTabla();
+        btnActualizar.setVisible(true);
         }   
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -590,16 +615,20 @@ public class frmCRUD extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         
-        int id = 0;
+        
         AlumnoLecturaDTO al = new AlumnoLecturaDTO();
         
-        String texto = JOptionPane.showInputDialog("Ingrese el id");
+        String texto = JOptionPane.showInputDialog("Ingrese el id del alumno");
         
         if (validarNumero(texto) == true){
         
         id = Integer.parseInt(texto);
         
         
+        btnHecho.setVisible(true);
+        btnCancelar2.setVisible(true);
+        
+        btnActualizar.setVisible(false);
         
         try{
            
@@ -652,6 +681,7 @@ public class frmCRUD extends javax.swing.JFrame {
         }
         
         EditarAlumnoDTO alumno = new EditarAlumnoDTO();
+        alumno.setId(id);
         alumno.setApellidoMaterno(campoTextoApellidoM.getText());
         alumno.setApellidoPaterno(campoTextoApellidoP.getText());
         alumno.setNombres(campoTextoNombre.getText());
@@ -662,6 +692,8 @@ public class frmCRUD extends javax.swing.JFrame {
         try {
             
             alumnoNegocio.editar(alumno);
+            JOptionPane.showMessageDialog(this, "Alumno Actualizado");
+
         }
         
          catch (NegocioException ex) {
@@ -674,6 +706,30 @@ public class frmCRUD extends javax.swing.JFrame {
         }          
         
     }//GEN-LAST:event_btnHechoActionPerformed
+
+    private void btnCancelar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelar2ActionPerformed
+        // TODO add your handling code here:
+        btnHecho.setVisible(false);
+        btnEliminar.setVisible(false);
+        btnCancelar2.setVisible(false);
+        btnActualizar.setVisible(true);
+    }//GEN-LAST:event_btnCancelar2ActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        
+        EliminarAlumnoDTO ealum = new EliminarAlumnoDTO();
+        ealum.setIdAlumno(id);
+        
+        try {
+            alumnoNegocio.eliminar(ealum);
+            JOptionPane.showMessageDialog(this, "Alumno eliminado");
+        } catch (NegocioException ex) {
+            Logger.getLogger(frmCRUD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.cargarMetodosIniciales();
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     
     public boolean validarNombre(String nombre){
@@ -739,6 +795,7 @@ public class frmCRUD extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JToggleButton btnAtras;
+    private javax.swing.JButton btnCancelar2;
     private javax.swing.JButton btnCancelarRegistro;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;

@@ -21,5 +21,7 @@ public interface IAlumnoNegocio {
     
     public EditarAlumnoDTO editar(EditarAlumnoDTO alumno) throws NegocioException;
     
+    public EliminarAlumnoDTO eliminar(EliminarAlumnoDTO alumno) throws NegocioException;
+    
     
 }
