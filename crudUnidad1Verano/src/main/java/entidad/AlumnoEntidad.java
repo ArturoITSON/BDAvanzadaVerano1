@@ -20,6 +20,15 @@ public class AlumnoEntidad {
     public AlumnoEntidad() {
     }
 
+    public AlumnoEntidad(int idAlumno, String nombres, String apellidoPaterno, String apellidoMaterno) {
+        this.idAlumno = idAlumno;
+        this.nombres = nombres;
+        this.apellidoPaterno = apellidoPaterno;
+        this.apellidoMaterno = apellidoMaterno;
+    }
+
+    
+    
     public AlumnoEntidad(int idAlumno, String nombres, String apellidoPaterno, String apellidoMaterno, boolean eliminado, boolean activo) {
         this.idAlumno = idAlumno;
         this.nombres = nombres;

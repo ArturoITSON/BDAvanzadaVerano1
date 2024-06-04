@@ -5,6 +5,7 @@ presentacion\frmCRUD.class
 utilerias\ComboItems.class
 dtos\AlumnoTablaDTO.class
 presentacion\frmCRUD$2.class
+presentacion\frmCRUD$15.class
 negocio\NegocioException.class
 presentacion\frmCRUD$9.class
 persistencia\IAlumnoDAO.class

@@ -7,6 +7,7 @@ package persistencia;
 import dtos.AlumnoEntidadDTO;
 import entidad.AlumnoEntidad;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -127,12 +128,85 @@ public class AlumnoDAO implements IAlumnoDAO{
 
     @Override
     public AlumnoEntidad obtenerPorId(int id) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        AlumnoEntidad alum = new AlumnoEntidad();
+         try{
+        
+        // Establecer la conexion a la base de datos
+        Connection conexion = this.conexionBD.crearConexion();
+        
+        
+        // Sentencia SQL para seleccionar un alumno por su id
+        String sentenciaSql = "SELECT * FROM alumnos WHERE idAlumno = (?) ";
+        
+        PreparedStatement comandoSQL = conexion.prepareStatement(sentenciaSql);
+        
+        comandoSQL.setInt(1, id);
+        
+        ResultSet resultado = comandoSQL.executeQuery();
+        
+        resultado.next();
+        
+        AlumnoEntidad alumnoConsultado = new AlumnoEntidad(
+            resultado.getInt(1),
+            resultado.getString(2),
+            resultado.getString(3),
+            resultado.getString(4)   );
+            
+             System.out.println("21");
+            return alumnoConsultado;
+            
+        }
+
+         catch(SQLException ex){
+             //Capturar y manejar cualquier excepcion SQL que ocurra
+             System.out.println("Ocurrio un error " + ex.getMessage());
+         }
+
+         
+        return alum;
     }
 
     @Override
     public AlumnoEntidad editar(AlumnoEntidad alumno) throws PersistenciaException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+//        AlumnoEntidad alum = new AlumnoEntidad();
+//         try{
+//        
+//        // Establecer la conexion a la base de datos
+//        Connection conexion = this.conexionBD.crearConexion();
+//        
+//        
+//        // Sentencia SQL para seleccionar un alumno por su id
+//        String sentenciaSql = "SELECT * FROM alumnos WHERE idAlumno = (?) ";
+//        
+//        PreparedStatement comandoSQL = conexion.prepareStatement(sentenciaSql);
+//        
+//        comandoSQL.setInt(1, id);
+//        
+//        ResultSet resultado = comandoSQL.executeQuery();
+//        
+//        resultado.next();
+//        
+//        AlumnoEntidad alumnoConsultado = new AlumnoEntidad(
+//            resultado.getInt(1),
+//            resultado.getString(2),
+//            resultado.getString(3),
+//            resultado.getString(4)   );
+//            
+//             System.out.println("21");
+//            return alumnoConsultado;
+//            
+//        }
+//
+//         catch(SQLException ex){
+//             //Capturar y manejar cualquier excepcion SQL que ocurra
+//             System.out.println("Ocurrio un error " + ex.getMessage());
+//         }
+//
+//         
+//        return alum;       
+//        
+        return null;
     }
 
 

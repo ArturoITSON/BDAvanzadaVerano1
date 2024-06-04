@@ -90,7 +90,8 @@ public class AlumnoNegocio implements IAlumnoNegocio {
                     try {
                         alumnoDAO.insertar(alu);
                     } catch (PersistenciaException ex) {
-                        
+                      Logger.getLogger(AlumnoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+   
                     }
                 }
             }
@@ -102,12 +103,63 @@ public class AlumnoNegocio implements IAlumnoNegocio {
 
     @Override
     public AlumnoLecturaDTO obtenerPorId(int id) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        try{
+            AlumnoEntidad alu = alumnoDAO.obtenerPorId(id);            
+            
+            AlumnoLecturaDTO al = new AlumnoLecturaDTO();
+            
+            al.setActivo(alu.isActivo());
+            al.setApellidoMaterno(alu.getApellidoMaterno());
+            al.setApellidoPaterno(alu.getApellidoPaterno());
+            al.setNombres(alu.getNombres());
+            
+            System.out.println(alu.getNombres() + "aqui");
+            
+            return al;
+            
+        }
+        
+        catch(PersistenciaException ex){
+            Logger.getLogger(AlumnoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+
+            
+        }
+        return null;
     }
 
     @Override
     public EditarAlumnoDTO editar(EditarAlumnoDTO alumno) throws NegocioException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        AlumnoEntidad alu = new AlumnoEntidad();
+        String nombre = alumno.getNombres();
+        String apellidoP = alumno.getApellidoPaterno();
+        String apellidoM = alumno.getApellidoMaterno(); 
+        
+        
+        
+        if(validarNombre(nombre) == true){
+            if(validarApellido(apellidoP) == true){
+                if(validarApellido(apellidoM) == true){
+                    alu.setApellidoMaterno(apellidoM);
+                    alu.setApellidoPaterno(apellidoP);
+                    alu.setNombres(nombre);
+                    alu.setActivo(alumno.isActivo());
+                    
+                    try {
+                        alumnoDAO.editar(alu);
+                    } catch (PersistenciaException ex) {
+                      Logger.getLogger(AlumnoNegocio.class.getName()).log(Level.SEVERE, null, ex);
+   
+                    }
+                }
+            }
+        }
+        
+      return alumno;
+        
+        
+        
     }
         
         
@@ -127,8 +179,6 @@ public class AlumnoNegocio implements IAlumnoNegocio {
 
          return matcher.find(); 
       }
-      
-      
       
       
     }
